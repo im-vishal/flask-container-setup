@@ -1,0 +1,16 @@
+{
+    "name": "Flask DevContainer",
+    "dockerComposeFile": "docker-compose.venv-dev.yml",
+    "service": "flask-app",
+    "workspaceFolder": "/app",
+    "settings": {
+      "python.defaultInterpreterPath": "/venv/bin/python"
+    },
+    "extensions": [
+      "ms-python.python",
+      "ms-python.vscode-pylance"
+    ],
+    "postCreateCommand": "pip install -r requirements.txt",
+    "remoteUser": "appuser"
+  }
+  

@@ -1,0 +1,35 @@
+# ------------------- Stage 1: Build Stage ------------------------------
+FROM python:3.9 AS builder
+
+WORKDIR /app
+
+# Copy and install Python dependencies in a virtual environment
+COPY requirements.txt .
+RUN python -m venv /venv && \
+    /venv/bin/pip install --no-cache-dir -r requirements.txt
+
+# ------------------- Stage 2: Final Stage ------------------------------
+FROM python:3.9-alpine
+
+WORKDIR /app
+
+# Add a non-root user
+RUN addgroup --system appgroup && adduser --system appuser --ingroup appgroup
+
+# Copy virtual environment and application code
+COPY --from=builder /venv /venv
+COPY . .
+
+# Set environment variable for the virtual environment
+ENV PATH="/venv/bin:$PATH"
+
+# Use the non-root user
+USER appuser
+
+# Metadata labels
+LABEL maintainer="iamvirtualvishal@gmail.com" \
+    version="1.0.0" \
+    description="A lightweight Flask app for DevContainer."
+
+# Run the application
+CMD ["python", "app.py"]

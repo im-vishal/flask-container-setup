@@ -1,0 +1,11 @@
+services:
+  flask-app:
+    build:
+      context: ..
+      dockerfile: Dockerfile.basic-dev
+    ports:
+      - "5000:5000" # Expose Flask app on localhost
+    volumes:
+      - ..:/app # Mount the current directory for live code editing
+    environment:
+      - FLASK_ENV=development # Enable Flask development mode
